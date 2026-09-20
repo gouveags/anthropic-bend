@@ -12,11 +12,11 @@ Call Claude from Bend through a small authenticated localhost companion using th
 
 ## Install from Bend Hub
 
-[Package source](https://hub.bend-lang.com/0xf6096dc904e6bf39c5e2b709dd75eabe/anthropic.bend) · [Verified manifest](https://hub.bend-lang.com/0xf6096dc904e6bf39c5e2b709dd75eabe/manifest) · [Packaged README](https://hub.bend-lang.com/0xf6096dc904e6bf39c5e2b709dd75eabe/docs.bend)
+[Package source](https://hub.bend-lang.com/0x44dbbb9fe7023c9f8cc89550f8343cd3/anthropic.bend) · [Verified manifest](https://hub.bend-lang.com/0x44dbbb9fe7023c9f8cc89550f8343cd3/manifest) · [Packaged README](https://hub.bend-lang.com/0x44dbbb9fe7023c9f8cc89550f8343cd3/docs.bend)
 
 ```bend
-import 0xf6096dc904e6bf39c5e2b709dd75eabe/anthropic.bend as Anthropic
-import 0xf6096dc904e6bf39c5e2b709dd75eabe/json.bend as Json
+import 0x44dbbb9fe7023c9f8cc89550f8343cd3/anthropic.bend as Anthropic
+import 0x44dbbb9fe7023c9f8cc89550f8343cd3/json.bend as Json
 ```
 
 Bend downloads and verifies this immutable v0.1.0 package when compiling your program. Install and start the companion below as well. GitHub hosts the companion, examples, tests and releases; the packaged README links back to this repository.
