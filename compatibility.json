@@ -1,0 +1,12 @@
+{
+  "version": "0.1.0",
+  "protocol": 1,
+  "bend": "2.0.19",
+  "bun": "1.4.2",
+  "clang_tested": "21.1.8",
+  "native_optimization": "-O1",
+  "tested_platform": "Linux x86_64",
+  "live_anthropic_tested": false,
+  "anthropic": "0.127.0",
+  "bend_hub_hash": "0xf6096dc904e6bf39c5e2b709dd75eabe"
+}
