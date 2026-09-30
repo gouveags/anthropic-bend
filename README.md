@@ -6,21 +6,22 @@ Call Claude from Bend through a small authenticated localhost companion using th
 
 [Examples](./examples) · [Source](https://github.com/gouveags/anthropic-bend) · [Issues](https://github.com/gouveags/anthropic-bend/issues) · [OpenAI companion project](https://github.com/gouveags/openai-bend)
 
-> Experimental v0.1.0. A community project, not an official Anthropic or Bend project. This release covers the Messages API, not the entire SDK. Tests use a local mock API; live Claude inference has not been tested.
-
-<!-- hub:start -->
+> Experimental v0.1.0. A community project, not an official Anthropic or Bend project. This release covers the Messages API, not the entire SDK. Automated tests use a local mock API; a bounded live Claude smoke test is recorded below.
 
 ## Install from Bend Hub
 
-[Package source](https://hub.bend-lang.com/0x44dbbb9fe7023c9f8cc89550f8343cd3/anthropic.bend) · [Verified manifest](https://hub.bend-lang.com/0x44dbbb9fe7023c9f8cc89550f8343cd3/manifest) · [Packaged README](https://hub.bend-lang.com/0x44dbbb9fe7023c9f8cc89550f8343cd3/docs.bend)
+[**bend-anthropic-sdk@0.1.0.1**](https://hub.bend-lang.com/n/bend-anthropic-sdk) · [Packaged documentation](https://github.com/gouveags/anthropic-bend/blob/main/docs.bend) · [Source and examples](https://github.com/gouveags/anthropic-bend)
+
+Use **Bend 2.0.34 or newer** for named imports. Bend fetches the exact release, resolves it to an immutable content hash, and verifies the downloaded files. There is no separate install command for the Bend modules.
 
 ```bend
-import 0x44dbbb9fe7023c9f8cc89550f8343cd3/anthropic.bend as Anthropic
-import 0x44dbbb9fe7023c9f8cc89550f8343cd3/json.bend as Json
+import bend-anthropic-sdk@0.1.0.1/anthropic.bend as Anthropic
+import bend-anthropic-sdk@0.1.0.1/json.bend as Json
 ```
 
-Bend downloads and verifies this immutable v0.1.0 package when compiling your program. Install and start the companion below as well. GitHub hosts the companion, examples, tests and releases; the packaged README links back to this repository.
-<!-- hub:end -->
+Install and start the localhost companion below as well: the Hub package contains the Bend modules, documentation and MIT license, not the Bun companion or its dependencies. Provider API keys stay in the companion process.
+
+Release `0.1.0.1` fixes the JSON parser constructor collision with Bend 2.0.28+ and updates the example CLIs for Bend 2.0.34. The SDK API and bridge protocol are unchanged. Existing imports of the [previous hash](https://hub.bend-lang.com/0x44dbbb9fe7023c9f8cc89550f8343cd3) remain available, but require the older compiler they were published with. Use `0.1.0.1` on current Bend. Published versions are immutable; future updates use a new version.
 
 ## Features
 
@@ -41,12 +42,12 @@ No automatic tool execution, agent loop, arbitrary schema derivation, or stream-
 
 ## Install the companion
 
-Requirements: [Bend 2.0.19](https://github.com/bendlang/bend), [Bun 1.4.2](https://bun.sh/), and Git. Native builds also need Clang and Make. Linux x86_64 is tested; macOS is not yet validated.
+Requirements: [Bend 2.0.34+](https://github.com/bendlang/bend), [Bun 1.4.2](https://bun.sh/), and Git. Native builds also need Clang and Make. Linux x86_64 is tested; macOS is not yet validated.
 
 ```sh
 git clone https://github.com/gouveags/anthropic-bend.git
 cd anthropic-bend
-git checkout v0.1.0
+git checkout main
 bun install --frozen-lockfile
 ```
 
@@ -212,3 +213,18 @@ For connection failures, check the companion, port and shared token. For API fai
 ## License
 
 MIT. Anthropic's SDK and Bend are separately licensed. The JSON and transport foundation is shared with [openai-bend](https://github.com/gouveags/openai-bend).
+
+## Releases and live validation
+
+[Release workflow and credential renewal](./docs/releasing.md). New Hub versions publish automatically after their version bump lands on `main` and CI succeeds.
+
+For an explicitly authorized real-provider check, load your API key into the environment securely, build with the compiler in `compatibility.json`, then run:
+
+```sh
+make build
+SDK_LIVE_TEST=1 bun run test:live
+```
+
+This makes two billed requests (JavaScript nonstreaming and native streaming), each limited to 64 output tokens with retries disabled. It checks the actual reply and completion status. Regular `make test` uses local mocks and does not call a paid API. Provider keys are never needed by the release workflow.
+
+Live smoke validation on September 30, 2026 passed with `claude-haiku-4-5-20251001`: both the JavaScript nonstreaming and native streaming clients received a completed `SDK_OK` reply. This verifies basic real-provider integration, not every model or API feature.
