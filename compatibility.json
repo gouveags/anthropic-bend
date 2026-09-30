@@ -1,12 +1,15 @@
 {
   "version": "0.1.0",
   "protocol": 1,
-  "bend": "2.0.19",
+  "bend": "2.0.34",
   "bun": "1.4.2",
   "clang_tested": "21.1.8",
   "native_optimization": "-O1",
   "tested_platform": "Linux x86_64",
   "live_anthropic_tested": false,
   "anthropic": "0.127.0",
-  "bend_hub_hash": "0x44dbbb9fe7023c9f8cc89550f8343cd3"
+  "bend_hub_hash": "0x744ea0d3fa0b0f8099473116ce8372c4",
+  "bend_hub_name": "bend-anthropic-sdk",
+  "bend_hub_version": "0.1.0.1",
+  "previous_bend_hub_hash": "0x0bc665d2ca2b4a7f7df0c8b32cfaa356"
 }

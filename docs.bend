@@ -8,9 +8,24 @@ import Base
 #
 # Call Claude from Bend through a small authenticated localhost companion using the official Anthropic TypeScript SDK. Native and JavaScript Bend programs use the same interface.
 #
-# [Examples](./examples) · [Source](https://github.com/gouveags/anthropic-bend) · [Issues](https://github.com/gouveags/anthropic-bend/issues) · [OpenAI companion project](https://github.com/gouveags/openai-bend)
+# [Examples](https://github.com/gouveags/anthropic-bend/tree/main/examples) · [Source](https://github.com/gouveags/anthropic-bend) · [Issues](https://github.com/gouveags/anthropic-bend/issues) · [OpenAI companion project](https://github.com/gouveags/openai-bend)
 #
 # > Experimental v0.1.0. A community project, not an official Anthropic or Bend project. This release covers the Messages API, not the entire SDK. Tests use a local mock API; live Claude inference has not been tested.
+#
+# ## Install from Bend Hub
+#
+# [**bend-anthropic-sdk@0.1.0.1**](https://hub.bend-lang.com/n/bend-anthropic-sdk) · [Packaged documentation](https://github.com/gouveags/anthropic-bend/blob/main/docs.bend) · [Source and examples](https://github.com/gouveags/anthropic-bend)
+#
+# Use **Bend 2.0.34 or newer** for named imports. Bend fetches the exact release, resolves it to an immutable content hash, and verifies the downloaded files. There is no separate install command for the Bend modules.
+#
+# ```bend
+# import bend-anthropic-sdk@0.1.0.1/anthropic.bend as Anthropic
+# import bend-anthropic-sdk@0.1.0.1/json.bend as Json
+# ```
+#
+# Install and start the localhost companion below as well: the Hub package contains the Bend modules, documentation and MIT license, not the Bun companion or its dependencies. Provider API keys stay in the companion process.
+#
+# Release `0.1.0.1` fixes the JSON parser constructor collision with Bend 2.0.28+ and updates the example CLIs for Bend 2.0.34. The SDK API and bridge protocol are unchanged. Existing imports of the [previous hash](https://hub.bend-lang.com/0x44dbbb9fe7023c9f8cc89550f8343cd3) remain available, but require the older compiler they were published with. Use `0.1.0.1` on current Bend. Published versions are immutable; future updates use a new version.
 #
 # ## Features
 #
@@ -31,12 +46,12 @@ import Base
 #
 # ## Install the companion
 #
-# Requirements: [Bend 2.0.19](https://github.com/bendlang/bend), [Bun 1.4.2](https://bun.sh/), and Git. Native builds also need Clang and Make. Linux x86_64 is tested; macOS is not yet validated.
+# Requirements: [Bend 2.0.34+](https://github.com/bendlang/bend), [Bun 1.4.2](https://bun.sh/), and Git. Native builds also need Clang and Make. Linux x86_64 is tested; macOS is not yet validated.
 #
 # ```sh
 # git clone https://github.com/gouveags/anthropic-bend.git
 # cd anthropic-bend
-# git checkout v0.1.0
+# git checkout main
 # bun install --frozen-lockfile
 # ```
 #
@@ -111,11 +126,11 @@ import Base
 #
 # ## Examples
 #
-# - [hello.bend](./examples/hello.bend): basic typed request.
-# - [request.bend](./examples/request.bend): complete event reader and JSON CLI.
-# - [structured.bend](./examples/structured.bend): JSON Schema output.
-# - [tools.bend](./examples/tools.bend): request a tool call without automatic execution.
-# - [cancel.bend](./examples/cancel.bend): cancellation; cancellation intentionally exits nonzero.
+# - [hello.bend](https://github.com/gouveags/anthropic-bend/blob/main/examples/hello.bend): basic typed request.
+# - [request.bend](https://github.com/gouveags/anthropic-bend/blob/main/examples/request.bend): complete event reader and JSON CLI.
+# - [structured.bend](https://github.com/gouveags/anthropic-bend/blob/main/examples/structured.bend): JSON Schema output.
+# - [tools.bend](https://github.com/gouveags/anthropic-bend/blob/main/examples/tools.bend): request a tool call without automatic execution.
+# - [cancel.bend](https://github.com/gouveags/anthropic-bend/blob/main/examples/cancel.bend): cancellation; cancellation intentionally exits nonzero.
 #
 # Compile with `bend examples/hello.bend -o build/hello.js`, then run `bun build/hello.js`. Examples read `ANTHROPIC_BEND_PORT`, `ANTHROPIC_BEND_TOKEN` and, where needed, `ANTHROPIC_MODEL`.
 #
@@ -195,13 +210,26 @@ import Base
 #
 # Tests exercise the actual official SDK against local HTTP mocks, real TCP, native/JavaScript clients, documented examples and fresh content-addressed package imports. They use no real API key or paid inference. Passing mocks proves the integration contract, not model behavior, account access or all provider features.
 #
-# [compatibility.json](./compatibility.json) records pinned versions. CI checks types, formatting, compilation, tests and dependency advisories. Coverage includes Unicode, nesting, malformed input, auth, connection limits, deadlines, cancellation, disconnects and incomplete streams.
+# [compatibility.json](https://github.com/gouveags/anthropic-bend/blob/main/compatibility.json) records pinned versions. CI checks types, formatting, compilation, tests and dependency advisories. Coverage includes Unicode, nesting, malformed input, auth, connection limits, deadlines, cancellation, disconnects and incomplete streams.
 #
 # For connection failures, check the companion, port and shared token. For API failures, inspect status/request ID and verify credentials/model access in the companion. [Report reproducible issues](https://github.com/gouveags/anthropic-bend/issues) without private prompts or credentials.
 #
 # ## License
 #
 # MIT. Anthropic's SDK and Bend are separately licensed. The JSON and transport foundation is shared with [openai-bend](https://github.com/gouveags/openai-bend).
+#
+# ## Releases and live validation
+#
+# [Release workflow and credential renewal](https://github.com/gouveags/anthropic-bend/blob/main/docs/releasing.md). New Hub versions publish automatically after their version bump lands on `main` and CI succeeds.
+#
+# For an explicitly authorized real-provider check, load your API key into the environment securely, build with the compiler in `compatibility.json`, then run:
+#
+# ```sh
+# make build
+# SDK_LIVE_TEST=1 bun run test:live
+# ```
+#
+# This makes two billed requests (JavaScript nonstreaming and native streaming), each limited to 64 output tokens with retries disabled. It checks the actual reply and completion status. Regular `make test` uses local mocks and does not call a paid API. Provider keys are never needed by the release workflow.
 #
 
 def repository() -> String:
